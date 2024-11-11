@@ -1,8 +1,6 @@
 
 # Admin Dashboard
 
-![Admin Dashboard Logo](/placeholder.svg?height=100&width=100)
-
 ## Table of Contents
 
 - [Introduction](#introduction)
