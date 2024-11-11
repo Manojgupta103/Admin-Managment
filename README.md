@@ -72,7 +72,7 @@ After installation, you can navigate through the dashboard using the sidebar men
 
 ## Video Demo
 
-[![Admin Dashboard Demo](/placeholder.svg?height=300&width=500)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+https://github.com/user-attachments/assets/c6a8eeba-ddfd-4770-8ab4-c2079b2adf57
 
 Click the image above to watch a comprehensive video demonstration of the Admin Dashboard in action. The video covers:
 
