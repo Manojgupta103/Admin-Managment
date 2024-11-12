@@ -1,4 +1,3 @@
-
 # Admin Dashboard
 
 ## Table of Contents
