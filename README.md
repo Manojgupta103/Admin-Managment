@@ -1,5 +1,6 @@
 # Admin Dashboard
 
+
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -27,13 +28,14 @@ The Admin Dashboard is a powerful, interactive web application built with Next.j
 - **Real-time Updates**: Data refreshes automatically to provide the most current information.
 - **Customizable Charts**: Interactive charts that allow for deep dive into specific metrics.
 
+
 ## Installation
 
 To get started with the Admin Dashboard, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/admin-dashboard.git
+   git clone [https://github.com/your-username/admin-dashboard.git](https://github.com/Manojgupta103/Admin-Managment.git)
    cd admin-dashboard
    ```
 
