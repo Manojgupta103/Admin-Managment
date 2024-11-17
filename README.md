@@ -1,6 +1,5 @@
 # Admin Dashboard
 
-
 ## Table of Contents
 
 - [Introduction](#introduction)
