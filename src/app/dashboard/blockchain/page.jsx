@@ -1,48 +1,76 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { fetchDashboardData } from '@/lib/api'
-import { Coins, Wallet, ArrowUpRight, ArrowDownRight } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { fetchDashboardData } from "@/lib/api";
+import { Coins, Wallet, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 export default function BlockchainPage() {
-  const [blockchainData, setBlockchainData] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [timeFrame, setTimeFrame] = useState('daily')
-  const [showPercentages, setShowPercentages] = useState(false)
+  const [blockchainData, setBlockchainData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [timeFrame, setTimeFrame] = useState("daily");
+  const [showPercentages, setShowPercentages] = useState(false);
 
   useEffect(() => {
     async function loadBlockchainData() {
       try {
-        const data = await fetchDashboardData()
-        setBlockchainData(data.blockchainMetrics)
-        setIsLoading(false)
+        const data = await fetchDashboardData();
+        setBlockchainData(data.blockchainMetrics);
+        setIsLoading(false);
       } catch (err) {
-        setError(err.message)
-        setIsLoading(false)
+        setError(err.message);
+        setIsLoading(false);
       }
     }
 
-    loadBlockchainData()
-  }, [])
+    loadBlockchainData();
+  }, []);
 
-  if (isLoading) return <div className="text-center">Loading...</div>
-  if (error) return <div className="text-center text-red-500">Error: {error}</div>
-  if (!blockchainData) return <div className="text-center">No blockchain data available</div>
+  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (error)
+    return <div className="text-center text-red-500">Error: {error}</div>;
+  if (!blockchainData)
+    return <div className="text-center">No blockchain data available</div>;
 
   const renderStats = (data) => {
     const stats = [
-      { name: 'Total Tokens', value: data.totalTokens, icon: Coins, color: 'bg-blue-500' },
-      { name: 'Solana Wallets', value: data.totalWalletOnSolana, icon: Wallet, color: 'bg-green-500' },
-      { name: 'Polygon Wallets', value: data.totalWalletOnPolygon, icon: Wallet, color: 'bg-yellow-500' },
-      { name: 'Ethereum Wallets', value: data.totalWalletOnEthereum, icon: Wallet, color: 'bg-purple-500' },
-    ]
+      {
+        name: "Total Tokens",
+        value: data.totalTokens,
+        icon: Coins,
+        color: "bg-blue-500",
+      },
+      {
+        name: "Solana Wallets",
+        value: data.totalWalletOnSolana,
+        icon: Wallet,
+        color: "bg-green-500",
+      },
+      {
+        name: "Polygon Wallets",
+        value: data.totalWalletOnPolygon,
+        icon: Wallet,
+        color: "bg-yellow-500",
+      },
+      {
+        name: "Ethereum Wallets",
+        value: data.totalWalletOnEthereum,
+        icon: Wallet,
+        color: "bg-purple-500",
+      },
+    ];
 
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -55,7 +83,9 @@ export default function BlockchainPage() {
           >
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{item.name}</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  {item.name}
+                </CardTitle>
                 <item.icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -65,17 +95,22 @@ export default function BlockchainPage() {
           </motion.div>
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   const calculateGrowth = (current, previous) => {
-    const growth = ((current - previous) / previous) * 100
-    return growth.toFixed(2)
-  }
+    const growth = ((current - previous) / previous) * 100;
+    return growth.toFixed(2);
+  };
 
   const renderComparison = () => {
-    const currentData = blockchainData[timeFrame]
-    const previousData = timeFrame === 'daily' ? blockchainData.daily : timeFrame === 'monthly' ? blockchainData.monthly : blockchainData.allTime
+    const currentData = blockchainData[timeFrame];
+    const previousData =
+      timeFrame === "daily"
+        ? blockchainData.daily
+        : timeFrame === "monthly"
+        ? blockchainData.monthly
+        : blockchainData.allTime;
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -93,7 +128,13 @@ export default function BlockchainPage() {
                   ) : (
                     <ArrowDownRight className="text-red-500 mr-1" />
                   )}
-                  <span className={value > previousData[key] ? "text-green-500" : "text-red-500"}>
+                  <span
+                    className={
+                      value > previousData[key]
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }
+                  >
                     {calculateGrowth(value, previousData[key])}%
                   </span>
                 </div>
@@ -102,8 +143,8 @@ export default function BlockchainPage() {
           </Card>
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -138,10 +179,12 @@ export default function BlockchainPage() {
           {renderStats(blockchainData[timeFrame])}
         </TabsContent>
         <TabsContent value="details">
-          <h2 className="text-2xl font-semibold mb-4">Detailed Blockchain Statistics</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            Detailed Blockchain Statistics
+          </h2>
           {renderComparison()}
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
