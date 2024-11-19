@@ -1,54 +1,91 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { fetchDashboardData } from '@/lib/api'
-import { Users, FileText, ThumbsUp, Coins } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { fetchDashboardData } from "@/lib/api";
+import { Users, FileText, ThumbsUp, Coins } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function OverviewPage() {
-  const [dashboardData, setDashboardData] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [timeRange, setTimeRange] = useState('daily')
-  const [chartMetric, setChartMetric] = useState('users')
+  const [dashboardData, setDashboardData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [timeRange, setTimeRange] = useState("daily");
+  const [chartMetric, setChartMetric] = useState("users");
 
   useEffect(() => {
     async function loadDashboardData() {
       try {
-        const data = await fetchDashboardData()
-        setDashboardData(data)
-        setIsLoading(false)
+        const data = await fetchDashboardData();
+        setDashboardData(data);
+        setIsLoading(false);
       } catch (err) {
-        setError(err.message)
-        setIsLoading(false)
+        setError(err.message);
+        setIsLoading(false);
       }
     }
 
-    loadDashboardData()
-  }, [])
+    loadDashboardData();
+  }, []);
 
-  if (isLoading) return <div className="text-center">Loading...</div>
-  if (error) return <div className="text-center text-red-500">Error: {error}</div>
-  if (!dashboardData) return <div className="text-center">No dashboard data available</div>
+  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (error)
+    return <div className="text-center text-red-500">Error: {error}</div>;
+  if (!dashboardData)
+    return <div className="text-center">No dashboard data available</div>;
 
-  const { userMetrics, contentMetrics, engagementMetrics, blockchainMetrics } = dashboardData
+  const { userMetrics, contentMetrics, engagementMetrics, blockchainMetrics } =
+    dashboardData;
 
   const getMetricValue = (metric, type) => {
-    return dashboardData[`${metric}Metrics`][timeRange][type]
-  }
+    return dashboardData[`${metric}Metrics`][timeRange][type];
+  };
 
   const stats = [
-    { name: 'Total Users', value: getMetricValue('user', 'totalUser'), icon: Users, color: 'bg-blue-500' },
-    { name: 'Total Posts', value: getMetricValue('content', 'totalPosts'), icon: FileText, color: 'bg-green-500' },
-    { name: 'Total Likes', value: getMetricValue('engagement', 'totalLikes'), icon: ThumbsUp, color: 'bg-yellow-500' },
-    { name: 'Total Tokens', value: getMetricValue('blockchain', 'totalTokens'), icon: Coins, color: 'bg-purple-500' },
-  ]
+    {
+      name: "Total Users",
+      value: getMetricValue("user", "totalUser"),
+      icon: Users,
+      color: "bg-blue-500",
+    },
+    {
+      name: "Total Posts",
+      value: getMetricValue("content", "totalPosts"),
+      icon: FileText,
+      color: "bg-green-500",
+    },
+    {
+      name: "Total Likes",
+      value: getMetricValue("engagement", "totalLikes"),
+      icon: ThumbsUp,
+      color: "bg-yellow-500",
+    },
+    {
+      name: "Total Tokens",
+      value: getMetricValue("blockchain", "totalTokens"),
+      icon: Coins,
+      color: "bg-purple-500",
+    },
+  ];
 
-  const chartData = dashboardData[`${chartMetric}Metrics`][timeRange].chartData
+  const chartData = dashboardData[`${chartMetric}Metrics`][timeRange].chartData;
 
   return (
     <div className="space-y-6">
@@ -65,7 +102,7 @@ export default function OverviewPage() {
           </SelectContent>
         </Select>
       </div>
-      
+
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((item, index) => (
           <motion.div
@@ -76,7 +113,9 @@ export default function OverviewPage() {
           >
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{item.name}</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  {item.name}
+                </CardTitle>
                 <item.icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -135,11 +174,16 @@ export default function OverviewPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h3 className="text-lg font-medium">Active Users</h3>
-                  <p className="text-2xl font-bold">{userMetrics[timeRange].activeUser}</p>
+                  <p className="text-2xl font-bold">
+                    {userMetrics[timeRange].activeUser}
+                  </p>
                 </div>
                 <div>
                   <h3 className="text-lg font-medium">New Signups</h3>
-                  <p className="text-2xl font-bold">{userMetrics[timeRange].totalUser - userMetrics.daily.totalUser}</p>
+                  <p className="text-2xl font-bold">
+                    {userMetrics[timeRange].totalUser -
+                      userMetrics.daily.totalUser}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -154,11 +198,15 @@ export default function OverviewPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h3 className="text-lg font-medium">Total Posts</h3>
-                  <p className="text-2xl font-bold">{contentMetrics[timeRange].totalPosts}</p>
+                  <p className="text-2xl font-bold">
+                    {contentMetrics[timeRange].totalPosts}
+                  </p>
                 </div>
                 <div>
                   <h3 className="text-lg font-medium">Total Views</h3>
-                  <p className="text-2xl font-bold">{contentMetrics[timeRange].totalViews}</p>
+                  <p className="text-2xl font-bold">
+                    {contentMetrics[timeRange].totalViews}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -173,11 +221,15 @@ export default function OverviewPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h3 className="text-lg font-medium">Total Likes</h3>
-                  <p className="text-2xl font-bold">{engagementMetrics[timeRange].totalLikes}</p>
+                  <p className="text-2xl font-bold">
+                    {engagementMetrics[timeRange].totalLikes}
+                  </p>
                 </div>
                 <div>
                   <h3 className="text-lg font-medium">Total Comments</h3>
-                  <p className="text-2xl font-bold">{engagementMetrics[timeRange].totalComments}</p>
+                  <p className="text-2xl font-bold">
+                    {engagementMetrics[timeRange].totalComments}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -192,14 +244,16 @@ export default function OverviewPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h3 className="text-lg font-medium">Total Tokens</h3>
-                  <p className="text-2xl font-bold">{blockchainMetrics[timeRange].totalTokens}</p>
+                  <p className="text-2xl font-bold">
+                    {blockchainMetrics[timeRange].totalTokens}
+                  </p>
                 </div>
                 <div>
                   <h3 className="text-lg font-medium">Total Wallets</h3>
                   <p className="text-2xl font-bold">
                     {blockchainMetrics[timeRange].totalWalletOnSolana +
-                     blockchainMetrics[timeRange].totalWalletOnPolygon +
-                     blockchainMetrics[timeRange].totalWalletOnEthereum}
+                      blockchainMetrics[timeRange].totalWalletOnPolygon +
+                      blockchainMetrics[timeRange].totalWalletOnEthereum}
                   </p>
                 </div>
               </div>
@@ -208,5 +262,5 @@ export default function OverviewPage() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
