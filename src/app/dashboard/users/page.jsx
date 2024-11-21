@@ -1,48 +1,83 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { fetchDashboardData } from '@/lib/api'
-import { Users, UserPlus, UserCheck, Crown, ArrowUpRight, ArrowDownRight } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { fetchDashboardData } from "@/lib/api";
+import {
+  Users,
+  UserPlus,
+  UserCheck,
+  Crown,
+  ArrowUpRight,
+  ArrowDownRight,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 export default function UsersPage() {
-  const [userData, setUserData] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [timeFrame, setTimeFrame] = useState('daily')
-  const [showPercentages, setShowPercentages] = useState(false)
+  const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [timeFrame, setTimeFrame] = useState("daily");
+  const [showPercentages, setShowPercentages] = useState(false);
 
   useEffect(() => {
     async function loadUserData() {
       try {
-        const data = await fetchDashboardData()
-        setUserData(data.userMetrics)
-        setIsLoading(false)
+        const data = await fetchDashboardData();
+        setUserData(data.userMetrics);
+        setIsLoading(false);
       } catch (err) {
-        setError(err.message)
-        setIsLoading(false)
+        setError(err.message);
+        setIsLoading(false);
       }
     }
 
-    loadUserData()
-  }, [])
+    loadUserData();
+  }, []);
 
-  if (isLoading) return <div className="text-center">Loading...</div>
-  if (error) return <div className="text-center text-red-500">Error: {error}</div>
-  if (!userData) return <div className="text-center">No user data available</div>
+  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (error)
+    return <div className="text-center text-red-500">Error: {error}</div>;
+  if (!userData)
+    return <div className="text-center">No user data available</div>;
 
   const renderStats = (data) => {
     const stats = [
-      { name: 'Total Users', value: data.totalUser, icon: Users, color: 'bg-blue-500' },
-      { name: 'Active Users', value: data.activeUser, icon: UserCheck, color: 'bg-green-500' },
-      { name: 'Total Referrals', value: data.totalReferral, icon: UserPlus, color: 'bg-yellow-500' },
-      { name: 'Creators', value: data.creator, icon: Crown, color: 'bg-purple-500' },
-    ]
+      {
+        name: "Total Users",
+        value: data.totalUser,
+        icon: Users,
+        color: "bg-blue-500",
+      },
+      {
+        name: "Active Users",
+        value: data.activeUser,
+        icon: UserCheck,
+        color: "bg-green-500",
+      },
+      {
+        name: "Total Referrals",
+        value: data.totalReferral,
+        icon: UserPlus,
+        color: "bg-yellow-500",
+      },
+      {
+        name: "Creators",
+        value: data.creator,
+        icon: Crown,
+        color: "bg-purple-500",
+      },
+    ];
 
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -55,7 +90,9 @@ export default function UsersPage() {
           >
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{item.name}</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  {item.name}
+                </CardTitle>
                 <item.icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -65,17 +102,22 @@ export default function UsersPage() {
           </motion.div>
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   const calculateGrowth = (current, previous) => {
-    const growth = ((current - previous) / previous) * 100
-    return growth.toFixed(2)
-  }
+    const growth = ((current - previous) / previous) * 100;
+    return growth.toFixed(2);
+  };
 
   const renderComparison = () => {
-    const currentData = userData[timeFrame]
-    const previousData = timeFrame === 'daily' ? userData.daily : timeFrame === 'monthly' ? userData.monthly : userData.allTime
+    const currentData = userData[timeFrame];
+    const previousData =
+      timeFrame === "daily"
+        ? userData.daily
+        : timeFrame === "monthly"
+        ? userData.monthly
+        : userData.allTime;
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -93,7 +135,13 @@ export default function UsersPage() {
                   ) : (
                     <ArrowDownRight className="text-red-500 mr-1" />
                   )}
-                  <span className={value > previousData[key] ? "text-green-500" : "text-red-500"}>
+                  <span
+                    className={
+                      value > previousData[key]
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }
+                  >
                     {calculateGrowth(value, previousData[key])}%
                   </span>
                 </div>
@@ -102,8 +150,8 @@ export default function UsersPage() {
           </Card>
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -138,10 +186,12 @@ export default function UsersPage() {
           {renderStats(userData[timeFrame])}
         </TabsContent>
         <TabsContent value="details">
-          <h2 className="text-2xl font-semibold mb-4">Detailed User Statistics</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            Detailed User Statistics
+          </h2>
           {renderComparison()}
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
