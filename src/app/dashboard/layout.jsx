@@ -1,13 +1,13 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import Sidebar from './components/sidebar'
-import DashboardNav from './components/dashboard-nav'
-import { Menu } from 'lucide-react'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Sidebar from "./components/sidebar";
+import DashboardNav from "./components/dashboard-nav";
+import { Menu } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -40,5 +40,5 @@ export default function DashboardLayout({ children }) {
         </main>
       </div>
     </div>
-  )
+  );
 }
