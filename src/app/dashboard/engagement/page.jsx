@@ -1,49 +1,90 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { fetchDashboardData } from '@/lib/api'
-import { ThumbsUp, Eye, Bell, MessageCircle, MessageSquare, ArrowUpRight, ArrowDownRight } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { fetchDashboardData } from "@/lib/api";
+import {
+  ThumbsUp,
+  Eye,
+  Bell,
+  MessageCircle,
+  MessageSquare,
+  ArrowUpRight,
+  ArrowDownRight,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 export default function EngagementPage() {
-  const [engagementData, setEngagementData] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [timeFrame, setTimeFrame] = useState('daily')
-  const [showPercentages, setShowPercentages] = useState(false)
+  const [engagementData, setEngagementData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [timeFrame, setTimeFrame] = useState("daily");
+  const [showPercentages, setShowPercentages] = useState(false);
 
   useEffect(() => {
     async function loadEngagementData() {
       try {
-        const data = await fetchDashboardData()
-        setEngagementData(data.engagementMetrics)
-        setIsLoading(false)
+        const data = await fetchDashboardData();
+        setEngagementData(data.engagementMetrics);
+        setIsLoading(false);
       } catch (err) {
-        setError(err.message)
-        setIsLoading(false)
+        setError(err.message);
+        setIsLoading(false);
       }
     }
 
-    loadEngagementData()
-  }, [])
+    loadEngagementData();
+  }, []);
 
-  if (isLoading) return <div className="text-center">Loading...</div>
-  if (error) return <div className="text-center text-red-500">Error: {error}</div>
-  if (!engagementData) return <div className="text-center">No engagement data available</div>
+  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (error)
+    return <div className="text-center text-red-500">Error: {error}</div>;
+  if (!engagementData)
+    return <div className="text-center">No engagement data available</div>;
 
   const renderStats = (data) => {
     const stats = [
-      { name: 'Total Likes', value: data.totalLikes, icon: ThumbsUp, color: 'bg-blue-500' },
-      { name: 'Total Views', value: data.totalViews, icon: Eye, color: 'bg-green-500' },
-      { name: 'Total Notifications', value: data.totalNotifications, icon: Bell, color: 'bg-yellow-500' },
-      { name: 'Total Messages', value: data.totalMessage, icon: MessageCircle, color: 'bg-purple-500' },
-      { name: 'Private Chats', value: data.privateChats, icon: MessageSquare, color: 'bg-pink-500' },
-    ]
+      {
+        name: "Total Likes",
+        value: data.totalLikes,
+        icon: ThumbsUp,
+        color: "bg-blue-500",
+      },
+      {
+        name: "Total Views",
+        value: data.totalViews,
+        icon: Eye,
+        color: "bg-green-500",
+      },
+      {
+        name: "Total Notifications",
+        value: data.totalNotifications,
+        icon: Bell,
+        color: "bg-yellow-500",
+      },
+      {
+        name: "Total Messages",
+        value: data.totalMessage,
+        icon: MessageCircle,
+        color: "bg-purple-500",
+      },
+      {
+        name: "Private Chats",
+        value: data.privateChats,
+        icon: MessageSquare,
+        color: "bg-pink-500",
+      },
+    ];
 
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -56,7 +97,9 @@ export default function EngagementPage() {
           >
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{item.name}</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  {item.name}
+                </CardTitle>
                 <item.icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -66,17 +109,22 @@ export default function EngagementPage() {
           </motion.div>
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   const calculateGrowth = (current, previous) => {
-    const growth = ((current - previous) / previous) * 100
-    return growth.toFixed(2)
-  }
+    const growth = ((current - previous) / previous) * 100;
+    return growth.toFixed(2);
+  };
 
   const renderComparison = () => {
-    const currentData = engagementData[timeFrame]
-    const previousData = timeFrame === 'daily' ? engagementData.daily : timeFrame === 'monthly' ? engagementData.monthly : engagementData.allTime
+    const currentData = engagementData[timeFrame];
+    const previousData =
+      timeFrame === "daily"
+        ? engagementData.daily
+        : timeFrame === "monthly"
+        ? engagementData.monthly
+        : engagementData.allTime;
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -94,7 +142,13 @@ export default function EngagementPage() {
                   ) : (
                     <ArrowDownRight className="text-red-500 mr-1" />
                   )}
-                  <span className={value > previousData[key] ? "text-green-500" : "text-red-500"}>
+                  <span
+                    className={
+                      value > previousData[key]
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }
+                  >
                     {calculateGrowth(value, previousData[key])}%
                   </span>
                 </div>
@@ -103,8 +157,8 @@ export default function EngagementPage() {
           </Card>
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -139,10 +193,12 @@ export default function EngagementPage() {
           {renderStats(engagementData[timeFrame])}
         </TabsContent>
         <TabsContent value="details">
-          <h2 className="text-2xl font-semibold mb-4">Detailed Engagement Statistics</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            Detailed Engagement Statistics
+          </h2>
           {renderComparison()}
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
