@@ -1,6 +1,5 @@
 # Admin Dashboard
 
-
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -28,29 +27,32 @@ The Admin Dashboard is a powerful, interactive web application built with Next.j
 - **Real-time Updates**: Data refreshes automatically to provide the most current information.
 - **Customizable Charts**: Interactive charts that allow for deep dive into specific metrics.
 
-
 ## Installation
 
 To get started with the Admin Dashboard, follow these steps:
 
 1. Clone the repository:
+
    ```bash
    git clone [https://github.com/your-username/admin-dashboard.git](https://github.com/Manojgupta103/Admin-Managment.git)
    cd admin-dashboard
    ```
 
 2. Install the dependencies:
+
    ```bash
    npm install
    ```
 
 3. Set up environment variables:
    Create a `.env.local` file in the root directory and add the following:
+
    ```
    NEXT_PUBLIC_API_URL=your_api_url_here
    ```
 
 4. Run the development server:
+
    ```bash
    npm run dev
    ```
@@ -131,3 +133,4 @@ For any additional questions or support, please contact our team at support@admi
 This README provides a comprehensive overview of the Admin Dashboard project, including installation instructions, usage guidelines, a section for a video demo, component descriptions, API information, contribution guidelines, and licensing details. The Markdown format ensures that it will render nicely on GitHub or other platforms that support Markdown.
 
 Remember to replace placeholder URLs, email addresses, and other project-specific information with your actual project details. Also, you'll need to create or obtain appropriate images for the logo and video thumbnail, replacing the placeholder SVG URLs with actual image URLs.
+```
